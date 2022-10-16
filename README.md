@@ -39,6 +39,7 @@ $ curl -v http://localhost:3001/public
 For invalid api token please change for whatever to get Bad request
 
 ## Logic
+<img src="ta.png" width="100%"/><br />
 Added module structure for NestJS and dockerized it.
 
 For auth private endpoint uses header x-api-token via Middleware (see please .env file API_TOKEN key).
