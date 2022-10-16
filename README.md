@@ -26,10 +26,9 @@ See outvio.postman_collection.json in root folder
 ## Logic
 Added module structure for NestJS and dockerized it.
 
-For auth private endpoint uses header x-api-token (see please .env file API_TOKEN key)
-and request accept middleware.
+For auth private endpoint uses header x-api-token via Middleware (see please .env file API_TOKEN key).
 
-For public ep uses decorator, where getting ip address, and logic passes via service.
+For both EPs use decorator get IP address, and logic passes via service.
 
 Added configs for MONGO and client mongo-express.
 Related to requirements ijn test-assignment, no need save any data on mongo (saved in env vars), 

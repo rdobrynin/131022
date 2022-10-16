@@ -15,7 +15,6 @@ export class PublicService {
       ipAddress,
       RateLimitTypeEnum.IP,
     );
-    console.log(55555);
     if (!cacheItem) {
       await this.rateLimitService.throttle(ipAddress, RateLimitTypeEnum.IP);
     } else {
