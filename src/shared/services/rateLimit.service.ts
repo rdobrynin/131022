@@ -55,7 +55,7 @@ export class RateLimitService {
 
       const oneHourOffset = 60 * 60 * 1000;
 
-      if (Date.now() - authDto.initialTime <= oneHourOffset) {
+      if (Date.now() - authDto.initialTime < oneHourOffset) {
         const limit =
           type === RateLimitTypeEnum.TOKEN
             ? this.apiConfigService.rateLimit.token

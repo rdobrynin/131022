@@ -6,7 +6,6 @@ import { ApiConfigService } from '../shared/services/api-config.service';
 export class AuthMiddleware implements NestMiddleware {
   constructor(private readonly apiConfigService: ApiConfigService) {}
   async use(req: Request, res: Response, next: NextFunction) {
-    console.log('Request private ep && check x-api-token...');
     if (req.get('x-api-token') !== this.apiConfigService.apiToken) {
       throw new ForbiddenException();
     }

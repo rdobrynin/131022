@@ -7,7 +7,9 @@ import { AppController } from './app.controller';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { PublicModule } from "./modules/public/public.module";
+import { PublicModule } from './modules/public/public.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RateLimitInterceptor } from './interceptors/rate-limit.interceptor';
 
 @Module({
   imports: [
@@ -36,6 +38,11 @@ import { PublicModule } from "./modules/public/public.module";
     PublicModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RateLimitInterceptor,
+    },
+  ],
 })
 export class AppModule {}

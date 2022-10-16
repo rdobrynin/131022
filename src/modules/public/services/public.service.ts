@@ -1,32 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { RateLimitService } from '../../../shared/services/rateLimit.service';
-import { RateLimitTypeEnum } from '../../../shared/constants/rate-limit-type.enum';
-import { AuthPayloadDto } from '../../../shared/dtos/auth-payload.dto';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Auth } from '../../auth/schemas/auth.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PublicService {
   constructor(
-    private readonly logger: Logger,
-    private rateLimitService: RateLimitService,
+    @InjectModel(Auth.name) private readonly authModel: Model<Auth>,
   ) {}
 
-  async get(ipAddress: string): Promise<void> {
-    const cacheItem = await this.rateLimitService.getByIpAddress(
-      ipAddress,
-      RateLimitTypeEnum.IP,
-    );
-    if (!cacheItem) {
-      return await this.rateLimitService.throttle(
-        ipAddress,
-        RateLimitTypeEnum.IP,
-      );
-    } else {
-      const authDto: AuthPayloadDto = JSON.parse(cacheItem);
-      return await this.rateLimitService.throttle(
-        ipAddress,
-        RateLimitTypeEnum.IP,
-        authDto,
-      );
-    }
+  async get(): Promise<void> {
+    // whatever else
+    // await this.authModel.db.get('whatever');
   }
 }
