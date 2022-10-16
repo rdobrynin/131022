@@ -1,4 +1,4 @@
 export enum RateLimitTypeEnum {
-    IP = 'IP',
-    TOKEN = 'TOKEN',
+  IP = 'IP',
+  TOKEN = 'TOKEN',
 }

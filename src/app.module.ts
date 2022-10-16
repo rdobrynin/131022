@@ -6,6 +6,8 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { AppController } from './app.controller';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { PublicModule } from "./modules/public/public.module";
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { SharedModule } from './shared/shared.module';
     }),
     MongooseModule.forRoot(mongoOptions.uri),
     SharedModule,
+    AuthModule,
+    PublicModule,
   ],
   controllers: [AppController],
   providers: [],
