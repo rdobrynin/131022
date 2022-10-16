@@ -53,17 +53,20 @@ export class RateLimitService {
     } else {
       // if key is exists check count of requests and compare time
 
-      console.log(authDto);
-
       const oneHourOffset = 60 * 60 * 1000;
 
       if (Date.now() - authDto.initialTime <= oneHourOffset) {
-        const rateType =
+        const limit =
           type === RateLimitTypeEnum.TOKEN
             ? this.apiConfigService.rateLimit.token
             : this.apiConfigService.rateLimit.ipAddress;
-        if (authDto.count >= rateType) {
-          throw new ThrottlerException();
+        if (authDto.count >= limit) {
+          const minDiff = new Date(
+            authDto.initialTime + oneHourOffset - Date.now(),
+          ).getMinutes();
+          throw new ThrottlerException(
+            `Current limit requests max ${limit}, available make the next request in ${minDiff} minutes`,
+          );
         }
         await this.sendData(ipAddress, authDto.count + 1, type);
       } else {

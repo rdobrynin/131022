@@ -16,10 +16,13 @@ export class PublicService {
       RateLimitTypeEnum.IP,
     );
     if (!cacheItem) {
-      await this.rateLimitService.throttle(ipAddress, RateLimitTypeEnum.IP);
+      return await this.rateLimitService.throttle(
+        ipAddress,
+        RateLimitTypeEnum.IP,
+      );
     } else {
       const authDto: AuthPayloadDto = JSON.parse(cacheItem);
-      await this.rateLimitService.throttle(
+      return await this.rateLimitService.throttle(
         ipAddress,
         RateLimitTypeEnum.IP,
         authDto,
