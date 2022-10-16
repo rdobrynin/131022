@@ -1,11 +1,9 @@
 import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ApiConfigService } from '../shared/services/api-config.service';
 import { RateLimitService } from '../shared/services/rateLimit.service';
 import { AuthPayloadDto } from '../shared/dtos/auth-payload.dto';
-import { plainToClass } from 'class-transformer';
 import { RateLimitTypeEnum } from '../shared/constants/rate-limit-type.enum';
-import { ThrottlerException } from '../shared/exceptions/throttler.exception';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -20,42 +18,24 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     const ipAddress = req.ip;
-    // rate-limit
-    const cacheItem = await this.rateLimitService.getByIpAddress(ipAddress);
+
+    const cacheItem = await this.rateLimitService.getByIpAddress(
+      ipAddress,
+      RateLimitTypeEnum.TOKEN,
+    );
+    console.log(cacheItem);
 
     if (!cacheItem) {
-      await this.sendData(ipAddress, 1);
+      await this.rateLimitService.throttle(ipAddress, RateLimitTypeEnum.TOKEN);
     } else {
-      // if key is exists check count of requests and compare time
       const authDto: AuthPayloadDto = JSON.parse(cacheItem);
-
-      console.log(authDto);
-
-      if (authDto.type === RateLimitTypeEnum.TOKEN) {
-        const oneHourOffset = 60 * 60 * 1000;
-
-        if (Date.now() - authDto.initialTime <= oneHourOffset) {
-          if (authDto.count > this.apiConfigService.rateLimit.token) {
-            throw new ThrottlerException();
-          }
-          await this.sendData(ipAddress, authDto.count + 1);
-        } else {
-          await this.sendData(ipAddress, 1);
-        }
-      }
+      await this.rateLimitService.throttle(
+        ipAddress,
+        RateLimitTypeEnum.TOKEN,
+        authDto,
+      );
     }
 
     next();
-  }
-
-  private async sendData(ipAddress: string, count: number): Promise<void> {
-    const authPayloadDto = plainToClass(AuthPayloadDto, {
-      ipAddress: ipAddress,
-      type: RateLimitTypeEnum.TOKEN,
-      count: count,
-      initialTime: Date.now(),
-    });
-
-    await this.rateLimitService.set(ipAddress, authPayloadDto);
   }
 }
