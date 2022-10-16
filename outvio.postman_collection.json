@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "f0fdeac2-e319-4c18-9650-1e19b1cafdb9",
+		"name": "outvio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "api-token",
+						"value": "5763c25b-b86d-48dc-9ff0-4af7067fd960",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3001/public",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"public"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth/internal",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-api-token",
+						"value": "5763c25b-b86d-48dc-9ff0-4af7067fd960",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3001/auth",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
