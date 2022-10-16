@@ -33,8 +33,7 @@ $ curl --location --request POST 'localhost:3001/auth' \
 
 ```bash
 # GET public endpoint
-$ curl --location --request GET 'localhost:3001/public' \
---header 'Content-Type: application/json'
+$ curl -v http://localhost:3001/public
 ```
 
 For invalid api token please change for whatever to get Bad request
